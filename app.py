@@ -133,8 +133,8 @@ def cadastrar_empresa():
     #Tratando os dados vindos do formulário
     if request.method == 'POST':
         nome_empresa = request.form['nome_empresa']
-        cnpj = request.form['cnpj']
-        telefone = request.form['telefone']
+        cnpj = limpar_input (request.form['cnpj'])
+        telefone = limpar_input (request.form['telefone'])
         email = request.form['email']
         senha = request.form['senha']
 
@@ -183,8 +183,8 @@ def editar_empresa(id_empresa):
 #Tratando os dados vindos do formulário
     if request.method == 'POST':
         nome_empresa = request.form['nome_empresa']
-        cnpj = request.form['cnpj']
-        telefone = request.form['telefone']
+        cnpj = limpar_input (request.form['cnpj'])
+        telefone = limpar_input (request.form['telefone'])
         email = request.form['email']
         senha = request.form['senha']
 
@@ -334,7 +334,7 @@ def editarvaga(id_vaga):
         formato = request.form['formato']
         tipo = request.form['tipo']
         local = request.form['local']
-        salario = request.form['salario']
+        salario = limpar_input (request.form['salario'])
 
         if not titulo or not descricao or not formato or not tipo:
             return redirect('/empresa')

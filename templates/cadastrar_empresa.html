@@ -9,10 +9,10 @@
 <input type="text" name="nome_empresa" class="form-control" required><br><br>
 
 <label for="cnpj" class="form-label">CNPJ</label>
-<input type="text" name="cnpj" class="form-control" maxlength="14" placeholder="Somente números" required><br><br>
+<input type="text" id="cnpj" name="cnpj" class="form-control" required><br><br>
 
 <label for="telefone" class="form-label"> Telefone de contato</label>
-<input type="text" name="telefone" class="form-control" maxlength="11" placeholder="Somente números" required><br><br>
+<input type="text" id="telefone" name="telefone" class="form-control" required><br><br>
 
 <h2>Informações para acesso da plataforma</h2>
 <label for="email" class="form-label"> E-mail (LOGIN)</label>
@@ -26,4 +26,58 @@
 </div>{% if msg_erro %} <p>{{ msg_erro }} </p> {% endif %}
 
 </form>
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+</script>
+<!-- Script de validação do BS -->
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+'use strict'
+
+// Fetch all the forms we want to apply custom Bootstrap validation styles to
+const forms = document.querySelectorAll('.needs-validation')
+
+// Loop over them and prevent submission
+Array.from(forms).forEach(form => {
+  form.addEventListener('submit', event => {
+    if (!form.checkValidity()) {
+      event.preventDefault()
+      event.stopPropagation()
+    }
+
+    form.classList.add('was-validated')
+  }, false)
+})
+})()
+</script>
+
+<!-- Script do Input Mask -->
+<script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+
+<!-- Script de configuração do Input Mask -->
+<script>
+  Inputmask("99.999.999/9999-99").mask(document.getElementById("cnpj")); //Máscara para CNPJ
+  
+  Inputmask("(99) 99999-9999").mask(document.getElementById("telefone")); // Telefone
+
+</script>
 {% endblock %}
