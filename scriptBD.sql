@@ -24,3 +24,19 @@ create table vaga (
     status ENUM('ativa','inativa') default 'ativa' not null,
     foreign key (id_empresa) references empresa (id_empresa)
 );
+
+create table candidato (
+    id_candidato INT PRIMARY KEY AUTO_INCREMENT,
+    nome varchar(100) not null,
+    email varchar(100) unique not null,
+    telefone char(11) not null,
+    curriculo varchar(50) not null,
+    id_vaga int not null,
+    foreign key (id_vaga) references vaga (id_vaga)
+);
+
+CREATE TABLE arquivo (
+    id_arquivo INT PRIMARY KEY AUTO_INCREMENT,
+    nome_arquivo VARCHAR(100) NOT NULL,
+    data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,11 +1,20 @@
-from flask import Flask, render_template, request, redirect, session
+import os
+from flask import Flask, render_template, request, redirect, session, url_for, flash
 from mysql.connector import Error
 from config import *
 from db_functions import *
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = SECRET_KEY
+# Configurações de upload
+app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['ALLOWED_EXTENSIONS'] = {'pdf'}
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Limite de 16MB
 
+# Função para verificar se o arquivo tem uma extensão permitida
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 #Rota da página inicial (TODOS ACESSAM)
 @app.route('/')
@@ -482,9 +491,9 @@ def excluir_vaga(id_vaga):
         return redirect('/login')
     if 'adm' in session:
         return redirect('/adm')
-    
+
     try:
-        conexao, cursor = conectar_db()
+        conexao, cursor = conectar_db
         comandoSQL = 'DELETE FROM vaga WHERE id_vaga = %s AND status = "inativa"'
         cursor.execute(comandoSQL, (id_vaga,))
         conexao.commit()
@@ -495,14 +504,87 @@ def excluir_vaga(id_vaga):
         return f"ERRO! Outros erros: {erro}"
     finally:
         encerrar_db(cursor, conexao)
+# Rota para exibir o formulário de candidatura e fazer upload do currículo - GET
+@app.route('/candidatar_vaga/<int:id_vaga>', methods=['GET'])
+def candidatar_vaga(id_vaga):
+    # Aqui você deve buscar a vaga correspondente no banco de dados ou em outro lugar
+    # No caso, como você não está usando banco de dados, vamos criar uma vaga fictícia
+    vaga = {
+        'id_vaga': id_vaga,
+        'titulo': 'Vaga de Desenvolvedor Web',  # Exemplo de título
+        'descricao': 'Desenvolvedor com experiência em Python e Flask'  # Exemplo de descrição
+    }
+    
+    # Passa a vaga para o template
+    return render_template('candidatar_vaga.html', vaga=vaga)
+
+
+# Rota para a candidatura a vaga (Upload de currículo) - POST
+@app.route('/candidatar_vaga/<int:id_vaga>', methods=['POST'])
+def enviar_candidatura(id_vaga):
+    nome = request.form.get('nome')
+    email = request.form.get('email')
+    curriculo = request.files.get('curriculo')
+    
+    if not nome or not email or not curriculo:
+        flash('Todos os campos são obrigatórios!', 'error')
+        return redirect(url_for('candidatar_vaga', id_vaga=id_vaga))
+
+    # Verifica se o arquivo tem uma extensão permitida
+    if curriculo and allowed_file(curriculo.filename):
+        try:
+            # Salvar o currículo na pasta de uploads com um nome único
+            nome_arquivo = f"{id_vaga}_{curriculo.filename}"
+            curriculo.save(os.path.join(app.config['UPLOAD_FOLDER'], nome_arquivo))
+
+            # Mensagem de sucesso
+            flash('Currículo enviado com sucesso!', 'success')
+            return redirect(url_for('index'))  # Redireciona para a página inicial após o envio
+
+        except Exception as erro:
+            flash(f'Ocorreu um erro ao salvar o currículo: {erro}', 'error')
+            return redirect(url_for('candidatar_vaga', id_vaga=id_vaga))  # Retorna à página de candidatura em caso de erro
+    else:
+        flash('Formato de arquivo inválido! Apenas PDF, DOC, DOCX e TXT são permitidos.', 'error')
+        return redirect(url_for('candidatar_vaga', id_vaga=id_vaga))  # Retorna à página de candidatura se o arquivo for inválido
+@app.route('/buscar_vagas', methods=['GET'])
+def buscar_vagas():
+    cursor = None  # Inicializa a variável cursor
+    conexao = None  # Inicializa a variável conexão
+    try:
+        word = request.args.get('q', '')  # Captura o termo de busca, padrão é vazio
+        if word:  # Só faz a consulta se o termo de pesquisa não estiver vazio
+            comandoSQL = '''
+            SELECT vaga.*, empresa.nome_empresa
+            FROM vaga
+            JOIN empresa ON vaga.id_empresa = empresa.id_empresa
+            WHERE vaga.titulo LIKE %s AND vaga.status = 'ativa'
+            ORDER BY vaga.id_vaga DESC;
+            '''
+            conexao, cursor = conectar_db()  # Conecta ao banco e obtém o cursor
+            cursor.execute(comandoSQL, (f"%{word}%",))
+            vagas_buscadas = cursor.fetchall()
+            return render_template('buscar_vaga.html', vagas=vagas_buscadas, word=word)  # Renderiza a página completa
+        return render_template('buscar_vaga.html', vagas=[], word=word)  # Retorna página sem resultados
+
+    except Error as erro:
+        return f"ERRO! Erro de Banco de Dados: {erro}"
+    except Exception as erro:
+        return f"ERRO! Outros erros: {erro}"
+    finally:
+        # Garante que o cursor e a conexão sejam fechados, se existirem
+        if cursor is not None:
+            cursor.close()
+        if conexao is not None:
+            conexao.close()
 
 
 
 
 
+ 
 
-
-
+    
 
 #Rota de logout (Encerra)
 @app.route('/logout')

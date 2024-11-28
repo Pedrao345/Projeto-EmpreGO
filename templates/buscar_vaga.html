@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Buscar Vagas{% endblock %}
+
+{% block content %}
+    <div class="container mt-4">
+        <!-- Formulário de Busca -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-12 col-md-8">
+                <form action="{{ url_for('buscar_vagas') }}" method="get" class="d-flex justify-content-center">
+                    <input type="text" class="form-control w-50" name="q" placeholder="Pesquisar vaga" value="{{ request.args.get('q', '') }}">
+                    <button type="submit" class="btn btn-primary ms-2">Buscar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Exibindo os resultados -->
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% if vagas %}
+                {% for vaga in vagas %}
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ vaga.titulo }}</h5>
+                                <p class="card-text">{{ vaga.descricao }}</p>
+                                <p><strong>Empresa:</strong> {{ vaga.nome_empresa }}</p>
+                                 <!-- Botão de candidatura -->
+                    <a href="{{ url_for('candidatar_vaga', id_vaga=vaga.id_vaga) }}" class="btn btn-primary">Candidatar-se</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-12">
+                    <p class="text-center">Nenhuma vaga encontrada.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}EmpreGO! - Enviar Candidatura{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <h1 class="text-center mb-4">Envie sua Candidatura</h1>
+            <p class="text-center text-muted">Complete o formulário abaixo para concorrer à vaga desejada.</p>
+
+            {% if msg_erro %}
+            <div class="alert alert-danger text-center" role="alert">
+                {{ msg_erro }}
+            </div>
+            {% endif %}
+
+            <form action="/candidatar_vaga/{{ vaga['id_vaga'] }}" method="post" enctype="multipart/form-data" class="needs-validation border p-4 shadow-sm rounded" novalidate>
+                <div class="form-group mb-3">
+                    <label for="nome" class="form-label fw-bold">Nome Completo</label>
+                    <input type="text" class="form-control" id="nome" name="nome" required>
+                    <div class="invalid-feedback">Informe seu nome completo.</div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label fw-bold">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                    <div class="invalid-feedback">Digite um e-mail válido.</div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="telefone" class="form-label fw-bold">Telefone</label>
+                    <input type="tel" class="form-control" id="telefone" name="telefone" required>
+                    <div class="invalid-feedback">Insira um telefone válido.</div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="curriculo" class="form-label fw-bold">Currículo (PDF)</label>
+                    <input type="file" class="form-control" id="curriculo" name="curriculo" accept=".pdf" required>
+                    <div class="invalid-feedback">Por favor, envie um currículo em formato PDF.</div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="mensagem" class="form-label fw-bold">Mensagem de Apresentação</label>
+                    <textarea class="form-control" id="mensagem" name="mensagem" rows="5" placeholder="Fale um pouco sobre você" required></textarea>
+                    <div class="invalid-feedback">Este campo não pode estar vazio.</div>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Máscara de telefone -->
+<script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+<script>
+    Inputmask("(99) 99999-9999").mask(document.getElementById("telefone"));
+</script>
+
+<!-- Validação personalizada -->
+<script>
+    (function () {
+        'use strict';
+        var forms = document.querySelectorAll('.needs-validation');
+        Array.from(forms).forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+</script>
+
+{% endblock %}
