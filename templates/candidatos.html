@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}EmpreGO!{% endblock %}
+
+{% block content %}
+    {% for candidato in candidatos %}
+        <p>
+            {{ candidato.nome }} -
+            {{ candidato.email }} - 
+            {{ candidato.telefone }} - 
+            <a href="/download/{{ candidato.id_candidato }}" class="btn btn-warning btn-sm">Baixar currículo</a> - 
+            <a href="{{ url_for('excluir_candidato', id_candidato=candidato.id_candidato, id_vaga=id_vaga) }}" 
+               onclick="return confirm('Tem certeza que deseja excluir este candidato e o currículo?')" class="btn btn-primary btn-sm me-2">Excluir</a>
+        </p>
+    {% else %}
+        <p>Nenhum candidato cadastrado</p>
+    {% endfor %}
+{% endblock %}

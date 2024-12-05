@@ -3,60 +3,41 @@
 {% block title %}EmpreGO! - Encontre sua vaga ideal{% endblock %}
 
 {% block content %}
-    <div class="container mt-4">
-        <!-- Mensagens Flash -->
-        {% with messages = get_flashed_messages(with_categories=True) %}
-            {% if messages %}
-                <div class="row">
-                    <div class="col-12">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert" style="position: relative; padding-right: 2.5rem;">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: absolute; top: 0.5rem; right: 0.5rem; padding: 0; margin: 0;"></button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-        {% endwith %}
-
-       <!-- Formulário de Busca -->
-<div class="row justify-content-center mb-4">
-    <div class="col-12 col-md-8">
-        <form action="{{ url_for('buscar_vagas') }}" method="get" class="d-flex justify-content-center">
-            <input type="text" class="form-control w-50" name="q" placeholder="Pesquisar vaga" value="{{ request.args.get('q', '') }}">
-            <button type="submit" class="btn btn-primary ms-2">Buscar</button>
-        </form>
-    </div>
-</div>
-
-
-        <!-- Conteúdo principal -->
-        <div class="text-center mb-4">
-            <h1>Encontre sua vaga ideal!</h1>
-            <p>Explore as vagas mais recentes e dê o próximo passo na sua carreira.</p>
+    <!-- Formulário de Busca -->
+    <div class="row justify-content-center mb-4">
+        <div class="col-12 col-md-8">
+            <form action="{{ url_for('procurar_vagas') }}" method="get" class="d-flex justify-content-center">
+                <input type="text" class="form-control w-50" name="word" placeholder="Pesquisar vaga" value="{{ request.args.get('word', '') }}">
+                <button type="submit" class="btn btn-primary ms-2">Buscar</button>
+            </form>
         </div>
+    </div>
 
-        <!-- Botão para empresa cadastrar vaga -->
-        {% if session.get('tipo_usuario') == 'empresa' %}
-            <div class="text-center mb-4">
-                <a href="{{ url_for('cadastrar_vaga') }}" class="btn btn-success">Cadastrar Vaga</a>
+    <!-- Conteúdo principal -->
+    <div class="text-center mb-4">
+        <h1>Encontre sua vaga ideal!</h1>
+        <p>Explore as vagas mais recentes e dê o próximo passo na sua carreira.</p>
+    </div>
+
+    <!-- Botão para empresa cadastrar vaga -->
+    {% if session.get('tipo_usuario') == 'empresa' %}
+        <div class="text-center mb-4">
+            <a href="{{ url_for('cadastrar_vaga') }}" class="btn btn-success">Cadastrar Vaga</a>
+        </div>
+    {% endif %}
+
+    <!-- Lista de vagas -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for vaga in vagas %}
+            <div class="col">
+                {% include 'card.html' %}
+            </div>
+        {% endfor %}
+
+        {% if not vagas %}
+            <div class="col-12">
+                <p class="text-center">Nenhuma vaga encontrada no momento.</p>
             </div>
         {% endif %}
-
-        <!-- Lista de vagas -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {% for vaga in vagas %}
-                <div class="col">
-                    {% include 'card.html' %}
-                </div>
-            {% endfor %}
-
-            {% if not vagas %}
-                <div class="col-12">
-                    <p class="text-center">Nenhuma vaga encontrada no momento.</p>
-                </div>
-            {% endif %}
-        </div>
     </div>
 {% endblock %}

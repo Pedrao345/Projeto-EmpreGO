@@ -7,7 +7,7 @@
         <!-- Formulário de Busca -->
         <div class="row justify-content-center mb-4">
             <div class="col-12 col-md-8">
-                <form action="{{ url_for('buscar_vagas') }}" method="get" class="d-flex justify-content-center">
+                <form action="{{ url_for('procurar_vagas') }}" method="get" class="d-flex justify-content-center">
                     <input type="text" class="form-control w-50" name="q" placeholder="Pesquisar vaga" value="{{ request.args.get('q', '') }}">
                     <button type="submit" class="btn btn-primary ms-2">Buscar</button>
                 </form>
@@ -24,8 +24,7 @@
                                 <h5 class="card-title">{{ vaga.titulo }}</h5>
                                 <p class="card-text">{{ vaga.descricao }}</p>
                                 <p><strong>Empresa:</strong> {{ vaga.nome_empresa }}</p>
-                                 <!-- Botão de candidatura -->
-                    <a href="{{ url_for('candidatar_vaga', id_vaga=vaga.id_vaga) }}" class="btn btn-primary">Candidatar-se</a>
+                                <a href="{{ url_for('candidatar_vaga', id_vaga=vaga.id_vaga) }}" class="btn btn-primary">Candidatar-se</a>
                             </div>
                         </div>
                     </div>

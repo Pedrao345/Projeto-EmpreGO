@@ -40,12 +40,6 @@
                     <div class="invalid-feedback">Por favor, envie um currículo em formato PDF.</div>
                 </div>
 
-                <div class="form-group mb-3">
-                    <label for="mensagem" class="form-label fw-bold">Mensagem de Apresentação</label>
-                    <textarea class="form-control" id="mensagem" name="mensagem" rows="5" placeholder="Fale um pouco sobre você" required></textarea>
-                    <div class="invalid-feedback">Este campo não pode estar vazio.</div>
-                </div>
-
                 <div class="d-flex justify-content-center mt-4">
                     <button type="submit" class="btn btn-success btn-lg">Enviar</button>
                 </div>
@@ -54,13 +48,13 @@
     </div>
 </div>
 
-<!-- Máscara de telefone -->
+
 <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
 <script>
     Inputmask("(99) 99999-9999").mask(document.getElementById("telefone"));
 </script>
 
-<!-- Validação personalizada -->
+
 <script>
     (function () {
         'use strict';
