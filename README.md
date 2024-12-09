@@ -33,3 +33,4 @@ Este projeto foi feito para facilitar a procura de emprego online.
 Mencione o nome dos alunos responsáveis pelo desenvolvimento do projeto e seus respectivos contatos.
 - Pedro Henrique de Paula Rezende - pedro.paula.senai@gmail.com - Pedrao345
 ## Licença
+Este projeto está licenciado sob a Licença MIT - veja o arquivo LICENSE para mais detalhes.
