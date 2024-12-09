@@ -563,6 +563,10 @@ def procurar_vagas():
 
 @app.route('/candidatar_vaga/<int:id_vaga>', methods=['GET', 'POST'])
 def candidatar_vaga(id_vaga):
+
+    if session:
+        return redirect ('/')
+
     try:
         # Recuperar informações da vaga no banco de dados
         conexao, cursor = conectar_db()
