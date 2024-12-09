@@ -2,7 +2,7 @@
 ### Curso Técnico de Desenvolvimento de Sistemas - Senai Itapeva
 # Nome do Projeto
 **Descrição:**
-Este projeto foi feito para promover eventos culturais para pessoas que querem acompanhar o mundo da música
+Este projeto foi feito para facilitar a procura de emprego online.
 ## Índice
 - [Funcionalidades](#funcionalidades)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
@@ -10,9 +10,17 @@ Este projeto foi feito para promover eventos culturais para pessoas que querem a
 - [Licença](licença)
 ## Funcionalidades
 - Funcionalidades do projeto:
- - Informar quando e onde artistas famosos fizerem shows em sua cidade.
- - Informar o tipo de evento.
- - Informar o gênero músical do evento.
+ - Cadastrar empresas como ADM.
+ - Desativar empresas.
+ - Excluir empresas.
+ - Cadastrar novas vagas de emprego como empresa.
+ - Desativar vagas.
+ - Excluir vagas.
+ - Ver currículos enviados para as vagas.
+ - Baixar os currículos enviados para as vagas.
+ - Ver as vagas de emprego como usuário.
+ - Se candidatar para uma vaga de emprego.
+ - Enviar currículo para a vaga.
 ## Tecnologias Utilizadas
 - **Linguagem/Frameworks:**
  Principais tecnologias utilizadas no projeto:
